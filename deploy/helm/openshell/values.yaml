@@ -74,6 +74,7 @@ server:
   sandboxNamespace: openshell
   dbUrl: "sqlite:/var/openshell/openshell.db"
   sandboxImage: "ghcr.io/nvidia/openshell-community/sandboxes/base:latest"
+  supervisorImage: "ghcr.io/nvidia/openshell/supervisor:latest"
   # Kubernetes imagePullPolicy for sandbox pods.  Empty = Kubernetes default
   # (Always for :latest, IfNotPresent otherwise).  Set to "Always" for dev
   # clusters so new images are picked up without manual eviction.

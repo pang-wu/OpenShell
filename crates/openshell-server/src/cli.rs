@@ -79,6 +79,10 @@ struct Args {
     #[arg(long, env = "OPENSHELL_SANDBOX_IMAGE")]
     sandbox_image: Option<String>,
 
+    /// Container image for the supervisor init container.
+    #[arg(long, env = "OPENSHELL_SUPERVISOR_IMAGE")]
+    supervisor_image: Option<String>,
+
     /// Kubernetes imagePullPolicy for sandbox pods (Always, IfNotPresent, Never).
     #[arg(long, env = "OPENSHELL_SANDBOX_IMAGE_PULL_POLICY")]
     sandbox_image_pull_policy: Option<String>,
@@ -309,6 +313,10 @@ async fn run_from_args(args: Args) -> Result<()> {
 
     if let Some(image) = args.sandbox_image {
         config = config.with_sandbox_image(image);
+    }
+
+    if let Some(image) = args.supervisor_image {
+        config = config.with_supervisor_image(image);
     }
 
     if let Some(policy) = args.sandbox_image_pull_policy {

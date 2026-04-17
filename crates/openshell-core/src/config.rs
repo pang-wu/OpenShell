@@ -131,6 +131,10 @@ pub struct Config {
     #[serde(default = "default_sandbox_image")]
     pub sandbox_image: String,
 
+    /// Container image containing the supervisor binary for init-container injection.
+    #[serde(default)]
+    pub supervisor_image: String,
+
     /// Kubernetes `imagePullPolicy` for sandbox pods (e.g. `Always`,
     /// `IfNotPresent`, `Never`).  Defaults to empty, which lets Kubernetes
     /// apply its own default (`:latest` → `Always`, anything else →
@@ -236,6 +240,7 @@ impl Config {
             compute_drivers: default_compute_drivers(),
             sandbox_namespace: default_sandbox_namespace(),
             sandbox_image: default_sandbox_image(),
+            supervisor_image: String::new(),
             sandbox_image_pull_policy: String::new(),
             grpc_endpoint: String::new(),
             ssh_gateway_host: default_ssh_gateway_host(),
@@ -305,6 +310,13 @@ impl Config {
     #[must_use]
     pub fn with_sandbox_image(mut self, image: impl Into<String>) -> Self {
         self.sandbox_image = image.into();
+        self
+    }
+
+    /// Create a new configuration with a supervisor init-container image.
+    #[must_use]
+    pub fn with_supervisor_image(mut self, image: impl Into<String>) -> Self {
+        self.supervisor_image = image.into();
         self
     }
 

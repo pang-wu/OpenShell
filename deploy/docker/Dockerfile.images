@@ -221,9 +221,10 @@ COPY --chmod=755 deploy/docker/.build/prebuilt-binaries/${TARGETARCH}/openshell-
 
 FROM supervisor-binary-${BINARY_SOURCE} AS supervisor-binary
 
-# Minimal extraction stage for fast-deploy: exports only the supervisor
-# binary (~20-40 MB) instead of the entire build environment (~968 MB).
-FROM scratch AS supervisor-output
+# Minimal image containing only the supervisor binary.  Used as an init
+# container to copy the binary into an emptyDir volume shared with the
+# sandbox container.  busybox:musl provides `cp` so the image is runnable.
+FROM busybox:musl AS supervisor-output
 COPY --from=supervisor-binary /build/out/openshell-sandbox /openshell-sandbox
 
 # ---------------------------------------------------------------------------

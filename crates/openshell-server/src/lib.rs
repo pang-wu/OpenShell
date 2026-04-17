@@ -370,6 +370,7 @@ async fn build_compute_runtime(
             KubernetesComputeConfig {
                 namespace: config.sandbox_namespace.clone(),
                 default_image: config.sandbox_image.clone(),
+                supervisor_image: config.supervisor_image.clone(),
                 image_pull_policy: config.sandbox_image_pull_policy.clone(),
                 grpc_endpoint: config.grpc_endpoint.clone(),
                 // Filesystem path to the supervisor's Unix-socket SSH daemon.

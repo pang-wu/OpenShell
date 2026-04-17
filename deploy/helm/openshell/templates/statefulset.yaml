@@ -64,6 +64,8 @@ spec:
               value: {{ .Values.server.sandboxNamespace | quote }}
             - name: OPENSHELL_SANDBOX_IMAGE
               value: {{ .Values.server.sandboxImage | quote }}
+            - name: OPENSHELL_SUPERVISOR_IMAGE
+              value: {{ .Values.server.supervisorImage | quote }}
             {{- if .Values.server.sandboxImagePullPolicy }}
             - name: OPENSHELL_SANDBOX_IMAGE_PULL_POLICY
               value: {{ .Values.server.sandboxImagePullPolicy | quote }}
