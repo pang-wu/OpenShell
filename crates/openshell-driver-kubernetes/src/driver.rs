@@ -769,6 +769,12 @@ fn apply_supervisor_sideload(pod_template: &mut serde_json::Value, supervisor_im
             "name": SUPERVISOR_INIT_CONTAINER_NAME,
             "image": image,
             "command": ["cp", "/openshell-sandbox", format!("{}/openshell-sandbox", SUPERVISOR_MOUNT_PATH)],
+            "securityContext": {
+                "runAsNonRoot": true,
+                "allowPrivilegeEscalation": false,
+                "readOnlyRootFilesystem": true,
+                "capabilities": { "drop": ["ALL"] }
+            },
             "volumeMounts": [{
                 "name": SUPERVISOR_VOLUME_NAME,
                 "mountPath": SUPERVISOR_MOUNT_PATH
@@ -1516,6 +1522,13 @@ mod tests {
             .as_array()
             .expect("init container command should be set");
         assert_eq!(init_cmd[0], "cp");
+
+        // Init container must run with minimal privileges
+        let init_sc = &init_containers[0]["securityContext"];
+        assert_eq!(init_sc["runAsNonRoot"], true);
+        assert_eq!(init_sc["allowPrivilegeEscalation"], false);
+        assert_eq!(init_sc["readOnlyRootFilesystem"], true);
+        assert_eq!(init_sc["capabilities"]["drop"][0], "ALL");
 
         // Volume should be emptyDir (not hostPath)
         let volumes = pod_template["spec"]["volumes"]

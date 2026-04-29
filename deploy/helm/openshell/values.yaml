@@ -74,6 +74,11 @@ server:
   sandboxNamespace: openshell
   dbUrl: "sqlite:/var/openshell/openshell.db"
   sandboxImage: "ghcr.io/nvidia/openshell-community/sandboxes/base:latest"
+  # Supervisor image injected into sandbox pods via init container.
+  # In production, pin to a digest for supply-chain integrity:
+  #   ghcr.io/nvidia/openshell/supervisor@sha256:<hash>
+  # Using a mutable tag (e.g. :latest) allows silent binary substitution
+  # on registry push.
   supervisorImage: "ghcr.io/nvidia/openshell/supervisor:latest"
   # Kubernetes imagePullPolicy for sandbox pods.  Empty = Kubernetes default
   # (Always for :latest, IfNotPresent otherwise).  Set to "Always" for dev
